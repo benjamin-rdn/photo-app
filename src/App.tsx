@@ -1,11 +1,25 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+import LibraryGrid from './components/LibraryGrid';
+import LibraryView from './components/LibraryView';
 
 const App = () => {
   return (
-    <div className="content">
-      <h1>Rsbuild with React</h1>
-      <p>Start building amazing things with Rsbuild.</p>
-    </div>
+    <Router>
+      <div>
+        <header className="header">
+          <div className="container">
+            <h1>Photography Portfolio</h1>
+          </div>
+        </header>
+        <main className="container">
+          <Routes>
+            <Route path="/" element={<LibraryGrid />} />
+            <Route path="/library/:libraryName" element={<LibraryView />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 };
 

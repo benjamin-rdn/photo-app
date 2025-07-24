@@ -12,7 +12,6 @@
     "verbatimModuleSyntax": true,
     "resolveJsonModule": true,
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
 
     /* type checking */
     "strict": true,

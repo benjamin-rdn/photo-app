@@ -1,4 +1,10 @@
-# Rsbuild project
+# Photography Portfolio Application
+
+A React-based photo gallery application for showcasing photography collections.
+
+## Overview
+
+This application provides a simple and elegant way to display photography collections organized in libraries. It automatically generates a catalog of photo libraries from the folder structure in the `/public/photos/` directory.
 
 ## Setup
 
@@ -8,29 +14,63 @@ Install the dependencies:
 pnpm install
 ```
 
-## Get started
+## Available Scripts
 
-Start the dev server, and the app will be available at [http://localhost:3000](http://localhost:3000).
+This project uses pnpm as the package manager and includes the following scripts:
 
-```bash
-pnpm dev
+| Script | Description |
+|--------|-------------|
+| `pnpm dev` | Starts the development server at [http://localhost:3000](http://localhost:3000) with hot reloading. It also automatically generates the libraries data before starting the server. |
+| `pnpm build` | Builds the application for production. Generates libraries data and creates optimized assets in the `dist` folder. |
+| `pnpm preview` | Serves the production build locally to preview before deployment. |
+| `pnpm generate-data` | Generates the `libraries.json` file by scanning the photo directories in `/public/photos/`. |
+
+## Project Structure
+
+```
+├── public/                  # Static assets that will be served directly
+│   ├── libraries.json       # Auto-generated file that catalogs all photo libraries
+│   └── photos/              # Photo libraries organized in folders
+│       ├── Portraits-2025/  # Example photo library
+│       └── Wedding-In-The-Alps/ # Another example photo library
+├── scripts/
+│   ├── createPlaceholderImages.js # Script to create test placeholder images
+│   └── generateLibraries.js       # Script to scan photo directories and create libraries.json
+├── src/
+│   ├── components/         # React components
+│   │   ├── LibraryGrid.tsx # Displays grid of available photo libraries
+│   │   ├── LibraryView.tsx # Displays photos within a selected library
+│   │   └── PhotoModal.tsx  # Modal for displaying full-size photos
+│   ├── App.tsx             # Main application component with routing
+│   ├── index.tsx           # Application entry point
+│   └── App.css             # Global styles
+├── rsbuild.config.ts       # Rsbuild configuration
+├── tsconfig.json           # TypeScript configuration
+├── tailwind.config.js      # Tailwind CSS configuration
+├── biome.json              # Biome configuration for linting/formatting
+└── package.json            # Project dependencies and scripts
 ```
 
-Build the app for production:
+## How It Works
 
-```bash
-pnpm build
-```
+1. **Photo Organization**: Place your photos in subdirectories within the `/public/photos/` directory. Each subdirectory will become a separate library in the application.
 
-Preview the production build locally:
+2. **Data Generation**: When you run `pnpm dev` or `pnpm build`, the application automatically scans the photo directories and generates a `libraries.json` file with metadata about your photos.
 
-```bash
-pnpm preview
-```
+3. **Navigation**: The application provides a grid view of all libraries and a detailed view for each library's photos.
 
-## Learn more
+## Adding New Photos
 
-To learn more about Rsbuild, check out the following resources:
+1. Create a new folder in `/public/photos/` with a descriptive name for your photo library
+2. Add your photo files to this folder
+3. Run `pnpm generate-data` to update the libraries catalog (or just restart the dev server)
+4. Your new library will appear in the application
 
-- [Rsbuild documentation](https://rsbuild.rs) - explore Rsbuild features and APIs.
-- [Rsbuild GitHub repository](https://github.com/web-infra-dev/rsbuild) - your feedback and contributions are welcome!
+## Learn More
+
+To learn more about the tools used in this project:
+
+- [Rsbuild documentation](https://rsbuild.rs) - The build tool used for this project
+- [React Router](https://reactrouter.com/) - For application routing
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [TypeScript](https://www.typescriptlang.org/) - JavaScript with syntax for types
