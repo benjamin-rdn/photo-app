@@ -28,27 +28,37 @@ This project uses pnpm as the package manager and includes the following scripts
 ## Project Structure
 
 ```
-├── public/                  # Static assets that will be served directly
-│   ├── libraries.json       # Auto-generated file that catalogs all photo libraries
-│   └── photos/              # Photo libraries organized in folders
-│       ├── Portraits-2025/  # Example photo library
-│       └── Wedding-In-The-Alps/ # Another example photo library
+├── public/                         # Static assets served directly
+│   ├── libraries.json              # Auto-generated catalog of photo libraries
+│   └── photos/                     # Photo libraries organized in folders
+│       ├── Portraits/              # Example photo library
+│       │   ├── photo1.jpg
+│       │   ├── ...                 # More portrait photos
+│       └── Street Photo/           # Another example photo library
+│           ├── photo1.jpg
+│           ├── ...                 # More street photos
 ├── scripts/
-│   ├── createPlaceholderImages.js # Script to create test placeholder images
-│   └── generateLibraries.js       # Script to scan photo directories and create libraries.json
+│   └── generateLibraries.js        # Scans photo directories and creates libraries.json
 ├── src/
-│   ├── components/         # React components
-│   │   ├── LibraryGrid.tsx # Displays grid of available photo libraries
-│   │   ├── LibraryView.tsx # Displays photos within a selected library
-│   │   └── PhotoModal.tsx  # Modal for displaying full-size photos
-│   ├── App.tsx             # Main application component with routing
-│   ├── index.tsx           # Application entry point
-│   └── App.css             # Global styles
-├── rsbuild.config.ts       # Rsbuild configuration
-├── tsconfig.json           # TypeScript configuration
-├── tailwind.config.js      # Tailwind CSS configuration
-├── biome.json              # Biome configuration for linting/formatting
-└── package.json            # Project dependencies and scripts
+│   ├── components/                 # React components
+│   │   ├── FlowPhotoView.tsx       # Flow-style photo viewer
+│   │   ├── LibraryGrid.tsx         # Displays grid of available photo libraries
+│   │   ├── LibraryView.tsx         # Displays photos within a selected library
+│   │   └── PhotoModal.tsx          # Modal for displaying full-size photos
+│   ├── App.tsx                     # Main application component with routing
+│   ├── index.tsx                   # Application entry point
+│   ├── App.css                     # Global styles
+│   ├── index.css                   # Additional global styles
+│   └── env.d.ts                    # TypeScript environment definitions
+├── rsbuild.config.ts               # Rsbuild configuration
+├── tsconfig.json                   # TypeScript configuration
+├── tailwind.config.js              # Tailwind CSS configuration
+├── biome.json                      # Biome configuration for linting/formatting
+├── package.json                    # Project dependencies and scripts
+├── pnpm-lock.yaml                  # pnpm lockfile
+├── pnpm-workspace.yaml             # pnpm workspace configuration
+├── postcss.config.js               # PostCSS configuration
+└── README.md                       # Project documentation
 ```
 
 ## How It Works
