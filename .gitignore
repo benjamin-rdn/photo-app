@@ -15,5 +15,5 @@ dist/
 !.vscode/extensions.json
 .idea
 
-public/photos
+public/photos/**/*.jpg
 public/libraries.json
