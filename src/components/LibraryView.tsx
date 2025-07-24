@@ -81,64 +81,54 @@ const LibraryView = () => {
   };
 
   if (loading) {
-    return <div style={{ textAlign: 'center', padding: '2.5rem 0' }}>Loading library...</div>;
+    return <div className="text-center py-10">Loading library...</div>;
   }
 
   if (error) {
-    return <div style={{ textAlign: 'center', padding: '2.5rem 0', color: 'red' }}>{error}</div>;
+    return <div className="text-center py-10 text-red-500">{error}</div>;
   }
 
   if (!library) {
-    return <div style={{ textAlign: 'center', padding: '2.5rem 0' }}>Library not found</div>;
+    return <div className="text-center py-10">Library not found</div>;
   }
 
   return (
     <div>
-      <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="mb-6 flex justify-between items-center">
         <div>
-          <Link to="/" style={{ color: '#3b82f6', textDecoration: 'none' }}>
+          <Link to="/" className="text-blue-500 no-underline">
             &larr; Back to Libraries
           </Link>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 600, marginTop: '0.5rem' }}>
-            {library.name.replace(/-/g, ' ')}
-          </h2>
+          <h2 className="text-2xl font-semibold mt-2">{library.name.replace(/-/g, ' ')}</h2>
         </div>
-        <div style={{ display: 'flex', border: '1px solid #e5e7eb', borderRadius: '0.5rem', overflow: 'hidden' }}>
+        <div className="flex border border-gray-200 rounded-lg overflow-hidden">
           <button
             type="button"
             onClick={() => setViewMode('grid')}
-            style={{
-              padding: '0.5rem 0.75rem',
-              backgroundColor: viewMode === 'grid' ? '#f3f4f6' : 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-            }}>
+            className={`px-3 py-2 border-none cursor-pointer text-sm ${
+              viewMode === 'grid' ? 'bg-gray-100' : 'bg-transparent'
+            }`}>
             Grid
           </button>
           <button
             type="button"
             onClick={() => setViewMode('flow')}
-            style={{
-              padding: '0.5rem 0.75rem',
-              backgroundColor: viewMode === 'flow' ? '#f3f4f6' : 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-            }}>
+            className={`px-3 py-2 border-none cursor-pointer text-sm ${
+              viewMode === 'flow' ? 'bg-gray-100' : 'bg-transparent'
+            }`}>
             Flow
           </button>
         </div>
       </div>
 
       {library.photos.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '2.5rem 0', color: '#6b7280' }}>No photos in this library</div>
+        <div className="text-center py-10 text-gray-500">No photos in this library</div>
       ) : viewMode === 'grid' ? (
-        <div className="grid">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 mt-4">
           {library.photos.map((photo) => (
             <button
               key={photo}
-              className="card"
+              className="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-200 hover:translate-y-[-3px] hover:shadow-md cursor-pointer text-left border-none bg-transparent p-0"
               onClick={() => openPhotoModal(photo)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -146,17 +136,12 @@ const LibraryView = () => {
                 }
               }}
               aria-label={`View ${photo}`}
-              type="button"
-              style={{ textAlign: 'left', cursor: 'pointer', border: 'none', background: 'none', padding: 0 }}>
-              <div className="card-image">
-                <img src={`${library.path}/${photo}`} alt={photo} />
+              type="button">
+              <div className="h-[200px] bg-gray-100 flex items-center justify-center">
+                <img src={`${library.path}/${photo}`} alt={photo} className="w-full h-full object-cover" />
               </div>
-              <div className="card-content">
-                <p
-                  className="card-subtitle"
-                  style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {photo}
-                </p>
+              <div className="p-4">
+                <p className="text-sm text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap">{photo}</p>
               </div>
             </button>
           ))}

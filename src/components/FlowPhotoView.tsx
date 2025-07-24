@@ -28,9 +28,9 @@ const FlowPhotoView = ({ photos, basePath, onPhotoClick, height = 200 }: FlowPho
 
   return (
     <div>
-      <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <label htmlFor="photoHeight" style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+      <div className="mb-4 flex gap-4 flex-col">
+        <div className="flex items-center gap-4">
+          <label htmlFor="photoHeight" className="text-sm text-gray-500">
             Height:
           </label>
           <input
@@ -41,13 +41,13 @@ const FlowPhotoView = ({ photos, basePath, onPhotoClick, height = 200 }: FlowPho
             step="10"
             value={photoHeight}
             onChange={(e) => setPhotoHeight(parseInt(e.target.value))}
-            style={{ width: '120px' }}
+            className="w-[120px]"
           />
-          <span style={{ fontSize: '0.875rem', color: '#6b7280', minWidth: '40px' }}>{photoHeight}px</span>
+          <span className="text-sm text-gray-500 min-w-[40px]">{photoHeight}px</span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <label htmlFor="photoMargin" style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+        <div className="flex items-center gap-4">
+          <label htmlFor="photoMargin" className="text-sm text-gray-500">
             Margin:
           </label>
           <input
@@ -58,13 +58,13 @@ const FlowPhotoView = ({ photos, basePath, onPhotoClick, height = 200 }: FlowPho
             step="1"
             value={photoMargin}
             onChange={(e) => setPhotoMargin(parseInt(e.target.value))}
-            style={{ width: '120px' }}
+            className="w-[120px]"
           />
-          <span style={{ fontSize: '0.875rem', color: '#6b7280', minWidth: '40px' }}>{photoMargin}px</span>
+          <span className="text-sm text-gray-500 min-w-[40px]">{photoMargin}px</span>
         </div>
       </div>
 
-      <div className="flow-photo-grid">
+      <div className="flex flex-wrap justify-start mt-4">
         {photos.map((photo) => (
           <button
             key={photo}
@@ -76,30 +76,13 @@ const FlowPhotoView = ({ photos, basePath, onPhotoClick, height = 200 }: FlowPho
             }}
             aria-label={`View ${photo}`}
             type="button"
-            style={{
-              border: 'none',
-              background: 'none',
-              padding: 0,
-              margin: `${photoMargin}px`,
-              cursor: 'pointer',
-              transition: 'transform 0.2s',
-            }}>
-            <div
-              style={{
-                height: `${photoHeight}px`,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            className="border-none bg-transparent p-0 cursor-pointer transition-transform duration-200 hover:-translate-y-[3px]"
+            style={{ margin: `${photoMargin}px` }}>
+            <div className="flex justify-center items-center" style={{ height: `${photoHeight}px` }}>
               <img
                 src={`${basePath}/${photo}`}
                 alt={photo}
-                style={{
-                  height: '100%',
-                  objectFit: 'contain',
-                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-                  transition: 'box-shadow 0.2s',
-                }}
+                className="h-full object-contain shadow-sm transition-shadow duration-200 hover:shadow-md"
               />
             </div>
           </button>

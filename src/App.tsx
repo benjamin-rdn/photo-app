@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import LibraryGrid from './components/LibraryGrid';
 import LibraryView from './components/LibraryView';
@@ -7,12 +7,12 @@ const App = () => {
   return (
     <Router>
       <div>
-        <header className="header">
-          <div className="container">
-            <h1>Photography Portfolio</h1>
+        <header className="bg-white shadow-sm py-4">
+          <div className="max-w-[80%] mx-auto px-4">
+            <h1 className="text-xl font-bold m-0">Photography Portfolio</h1>
           </div>
         </header>
-        <main className="container">
+        <main className="max-w-[80%] mx-auto px-4">
           <Routes>
             <Route path="/" element={<LibraryGrid />} />
             <Route path="/library/:libraryName" element={<LibraryView />} />
