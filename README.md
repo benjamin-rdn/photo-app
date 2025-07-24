@@ -23,7 +23,7 @@ This project uses pnpm as the package manager and includes the following scripts
 | `pnpm dev` | Starts the development server at [http://localhost:3000](http://localhost:3000) with hot reloading. It also automatically generates the libraries data before starting the server. |
 | `pnpm build` | Builds the application for production. Generates libraries data and creates optimized assets in the `dist` folder. |
 | `pnpm preview` | Serves the production build locally to preview before deployment. |
-| `pnpm generate-data` | Generates the `libraries.json` file by scanning the photo directories in `/public/photos/`. |
+| `pnpm generate-libs` | Generates the `libraries.json` file by scanning the photo directories in `/public/photos/`. |
 
 ## Project Structure
 

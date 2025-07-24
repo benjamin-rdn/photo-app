@@ -37,7 +37,7 @@ const PhotoModal = ({ photoUrl, photoName, onClose, onNext, onPrev }: PhotoModal
 
   return (
     <div className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
-      <div className="max-w-[80vw] bg-white rounded-lg overflow-hidden shadow-xl">
+      <div className="max-w-[80vw] bg-white bordered rounded-lg overflow-hidden shadow-xl">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 bg-black bg-opacity-50 text-white border-none rounded-full p-2 cursor-pointer transition-colors duration-200 hover:bg-opacity-70"
