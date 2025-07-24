@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import FlowPhotoView from './FlowPhotoView';
 import PhotoModal from './PhotoModal';
 
 interface Library {
@@ -8,12 +9,18 @@ interface Library {
   photos: string[];
 }
 
+type ViewMode = 'grid' | 'flow';
+
 const LibraryView = () => {
   const { libraryName } = useParams<{ libraryName: string }>();
   const [library, setLibrary] = useState<Library | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    const savedViewMode = localStorage.getItem('photoViewMode');
+    return savedViewMode === 'flow' || savedViewMode === 'grid' ? savedViewMode : 'grid';
+  });
 
   useEffect(() => {
     const fetchLibrary = async () => {
@@ -42,6 +49,10 @@ const LibraryView = () => {
       fetchLibrary();
     }
   }, [libraryName]);
+
+  useEffect(() => {
+    localStorage.setItem('photoViewMode', viewMode);
+  }, [viewMode]);
 
   const openPhotoModal = (photoFilename: string) => {
     setSelectedPhoto(photoFilename);
@@ -92,11 +103,37 @@ const LibraryView = () => {
             {library.name.replace(/-/g, ' ')}
           </h2>
         </div>
+        <div style={{ display: 'flex', border: '1px solid #e5e7eb', borderRadius: '0.5rem', overflow: 'hidden' }}>
+          <button
+            type="button"
+            onClick={() => setViewMode('grid')}
+            style={{
+              padding: '0.5rem 0.75rem',
+              backgroundColor: viewMode === 'grid' ? '#f3f4f6' : 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '0.875rem',
+            }}>
+            Grid
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode('flow')}
+            style={{
+              padding: '0.5rem 0.75rem',
+              backgroundColor: viewMode === 'flow' ? '#f3f4f6' : 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '0.875rem',
+            }}>
+            Flow
+          </button>
+        </div>
       </div>
 
       {library.photos.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '2.5rem 0', color: '#6b7280' }}>No photos in this library</div>
-      ) : (
+      ) : viewMode === 'grid' ? (
         <div className="grid">
           {library.photos.map((photo) => (
             <button
@@ -124,6 +161,8 @@ const LibraryView = () => {
             </button>
           ))}
         </div>
+      ) : (
+        <FlowPhotoView photos={library.photos} basePath={library.path} onPhotoClick={openPhotoModal} />
       )}
 
       {selectedPhoto && (
