@@ -16,3 +16,4 @@ dist/
 .idea
 
 public/photos
+public/libraries.json
