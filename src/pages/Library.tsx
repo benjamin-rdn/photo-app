@@ -1,9 +1,6 @@
-import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useGetLibraryPhotos } from '@/features/library-view/useLibrary';
+import { LibraryView } from '@/features/library-view';
 import { useViewMode, ViewModeSwitcher } from '@/features/view-mode-switcher';
-import type { Photo } from '@/types';
-import { PhotoList } from '@/ui/photo-list';
 
 function BackToLibrariesLink() {
   return (
@@ -15,15 +12,7 @@ function BackToLibrariesLink() {
 
 export function Library() {
   const { libraryName } = useParams<{ libraryName: string }>();
-  const [photos, setPhotos] = useState<Photo[]>([]);
   const { viewMode } = useViewMode();
-  const getLibraryPhotos = useGetLibraryPhotos();
-
-  useEffect(() => {
-    if (libraryName) {
-      setPhotos(getLibraryPhotos(libraryName));
-    }
-  }, [getLibraryPhotos, libraryName]);
 
   if (!libraryName) {
     return (
@@ -32,13 +21,6 @@ export function Library() {
         <div className="text-center py-10 text-gray-500">Library not found</div>
       </div>
     );
-  }
-
-  if (photos.length === 0) {
-    <div className="mb-6 flex justify-between items-center">
-      <BackToLibrariesLink />
-      <div className="text-center py-10 text-gray-500">No photo found in this library</div>
-    </div>;
   }
 
   return (
@@ -53,7 +35,7 @@ export function Library() {
       <div className="flex justify-end">
         <ViewModeSwitcher />
       </div>
-      <PhotoList photos={photos} viewMode={viewMode} />
+      <LibraryView libraryName={libraryName} viewMode={viewMode} />
     </div>
   );
 }
