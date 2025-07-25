@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Photo } from '../types';
+import type { Photo } from '@/types';
 
 interface FlowPhotoViewProps {
   photos: Photo[];

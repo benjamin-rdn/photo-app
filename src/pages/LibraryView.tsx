@@ -1,19 +1,16 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { usePhotoLibraries } from '../PhotoLibrariesProvider';
-import type { Library, Photo } from '../types';
-import PhotoList from './PhotoList';
-import PhotoModal from './PhotoModal';
+import PhotoList from '@/components/PhotoList';
+import { usePhotoLibraries } from '@/Providers/PhotoLibrariesProvider';
+import type { Library, Photo } from '@/types';
+import { PhotoModal } from '@/ui/PhotoModal';
 
-const LibraryView = () => {
+export function LibraryView() {
   const { libraryName } = useParams<{ libraryName: string }>();
   const { libraries } = usePhotoLibraries();
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
-  // Removed viewMode state, now handled by PhotoList
 
   const library = libraries?.find((lib: Library) => lib.name === libraryName) || null;
-
-  // Removed viewMode effect, now handled by PhotoList
 
   // Modal navigation helpers
   const getNextPhoto = () => {
@@ -39,8 +36,6 @@ const LibraryView = () => {
     if (prev) setSelectedPhoto(prev);
   };
 
-  // Removed openPhotoModal, now handled by PhotoList
-
   const closePhotoModal = () => {
     setSelectedPhoto(null);
   };
@@ -63,6 +58,4 @@ const LibraryView = () => {
       )}
     </div>
   );
-};
-
-export default LibraryView;
+}

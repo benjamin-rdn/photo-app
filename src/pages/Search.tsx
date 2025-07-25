@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import FlowPhotoView from './components/FlowPhotoView';
-import PhotoModal from './components/PhotoModal';
-import { usePhotoLibraries } from './PhotoLibrariesProvider';
-import type { Photo, PhotoMetadata } from './types';
+import { type ReactElement, useState } from 'react';
+import FlowPhotoView from '@/components/FlowPhotoView';
+import { usePhotoLibraries } from '@/Providers/PhotoLibrariesProvider';
+import type { Photo, PhotoMetadata } from '@/types';
+import { PhotoModal } from '@/ui/PhotoModal';
 
 function fuzzyMatch(str: string, query: string) {
   return str.toLowerCase().includes(query.toLowerCase());
 }
 
-const SearchPage = () => {
+export function Search(): ReactElement {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Photo[]>([]);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
@@ -88,6 +88,4 @@ const SearchPage = () => {
       )}
     </div>
   );
-};
-
-export default SearchPage;
+}

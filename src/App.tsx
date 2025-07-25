@@ -1,11 +1,11 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import './App.css';
+import '@/App.css';
 
 import { Link } from 'react-router-dom';
-import LibraryGrid from './components/LibraryGrid';
-import LibraryView from './components/LibraryView';
-import { PhotoLibrariesProvider } from './PhotoLibrariesProvider';
-import SearchPage from './SearchPage';
+import { PhotoLibrariesProvider } from '@/Providers/PhotoLibrariesProvider';
+import { Home } from '@/pages/Home';
+import { LibraryView } from '@/pages/LibraryView';
+import { Search } from '@/pages/Search';
 
 const App = () => {
   return (
@@ -24,9 +24,9 @@ const App = () => {
           </header>
           <main className="max-w-[80%] mx-auto px-4 pt-4">
             <Routes>
-              <Route path="/" element={<LibraryGrid />} />
+              <Route path="/" element={<Home />} />
               <Route path="/library/:libraryName" element={<LibraryView />} />
-              <Route path="/search" element={<SearchPage />} />
+              <Route path="/search" element={<Search />} />
             </Routes>
           </main>
         </div>

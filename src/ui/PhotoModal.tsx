@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
-import type { Photo } from '../types';
+import type { Photo } from '@/types';
+import { SvgClose, SvgNext, SvgPrevious } from '@/ui/svg';
 
 interface PhotoModalProps {
   photo: Photo;
@@ -8,7 +9,7 @@ interface PhotoModalProps {
   onPrev?: () => void;
 }
 
-const PhotoModal = ({ photo, onClose, onNext, onPrev }: PhotoModalProps) => {
+export function PhotoModal({ photo, onClose, onNext, onPrev }: PhotoModalProps) {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -43,21 +44,7 @@ const PhotoModal = ({ photo, onClose, onNext, onPrev }: PhotoModalProps) => {
           className="absolute top-4 right-4 bg-black bg-opacity-50 text-white border-none rounded-full p-2 cursor-pointer transition-colors duration-200 hover:bg-opacity-70"
           aria-label="Close"
           type="button">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true">
-            <title>Close</title>
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
+          <SvgClose />
         </button>
 
         <div className="bg-gray-900 flex items-center justify-center">
@@ -77,20 +64,7 @@ const PhotoModal = ({ photo, onClose, onNext, onPrev }: PhotoModalProps) => {
                 className="bg-gray-200 text-gray-900 border-none rounded-full p-2 cursor-pointer transition-colors duration-200 hover:bg-gray-300"
                 aria-label="Previous photo"
                 type="button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true">
-                  <title>Previous</title>
-                  <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
+                <SvgPrevious />
               </button>
             )}
 
@@ -100,20 +74,7 @@ const PhotoModal = ({ photo, onClose, onNext, onPrev }: PhotoModalProps) => {
                 className="bg-gray-200 text-gray-900 border-none rounded-full p-2 cursor-pointer transition-colors duration-200 hover:bg-gray-300"
                 aria-label="Next photo"
                 type="button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true">
-                  <title>Next</title>
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
+                <SvgNext />
               </button>
             )}
           </div>
@@ -121,6 +82,4 @@ const PhotoModal = ({ photo, onClose, onNext, onPrev }: PhotoModalProps) => {
       </div>
     </div>
   );
-};
-
-export default PhotoModal;
+}

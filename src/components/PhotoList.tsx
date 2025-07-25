@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import type { Photo } from '../types';
-import FlowPhotoView from './FlowPhotoView';
-import GridPhotoView from './GridPhotoView';
-import PhotoModal from './PhotoModal';
+import FlowPhotoView from '@/components/FlowPhotoView';
+import GridPhotoView from '@/components/GridPhotoView';
+import type { Photo } from '@/types';
+import { PhotoModal } from '@/ui/PhotoModal';
 
 type ViewMode = 'grid' | 'flow';
 
@@ -22,29 +22,20 @@ function PhotoList({ photos }: PhotoListProps) {
     localStorage.setItem('photoViewMode', viewMode);
   }, [viewMode]);
 
-  // Modal navigation helpers
-  const getNextPhoto = () => {
-    if (!photos || !selectedPhoto) return null;
-    const currentIndex = photos.findIndex((p) => p.filename === selectedPhoto.filename);
-    if (currentIndex === -1 || currentIndex === photos.length - 1) return null;
-    return photos[currentIndex + 1];
+  const handleNextClick = () => {
+    if (selectedIndex >= 0 && selectedIndex < photos.length - 1) {
+      setSelectedPhoto(photos[selectedIndex + 1]);
+    }
   };
 
-  const getPrevPhoto = () => {
-    if (!photos || !selectedPhoto) return null;
-    const currentIndex = photos.findIndex((p) => p.filename === selectedPhoto.filename);
-    if (currentIndex <= 0) return null;
-    return photos[currentIndex - 1];
+  const handlePreviousClick = () => {
+    if (selectedIndex > 0) {
+      setSelectedPhoto(photos[selectedIndex - 1]);
+    }
   };
 
-  const handleNext = () => {
-    const next = getNextPhoto();
-    if (next) setSelectedPhoto(next);
-  };
-  const handlePrev = () => {
-    const prev = getPrevPhoto();
-    if (prev) setSelectedPhoto(prev);
-  };
+  // Find index of selected photo in results
+  const selectedIndex = selectedPhoto ? photos.findIndex((p) => p.filename === selectedPhoto.filename) : -1;
 
   const openPhotoModal = (photo: Photo) => {
     setSelectedPhoto(photo);
@@ -88,7 +79,12 @@ function PhotoList({ photos }: PhotoListProps) {
         )}
 
         {selectedPhoto && (
-          <PhotoModal photo={selectedPhoto} onClose={closePhotoModal} onNext={handleNext} onPrev={handlePrev} />
+          <PhotoModal
+            photo={selectedPhoto}
+            onClose={closePhotoModal}
+            onNext={selectedIndex < photos.length - 1 ? handleNextClick : undefined}
+            onPrev={selectedIndex > 0 ? handlePreviousClick : undefined}
+          />
         )}
       </div>
     </div>

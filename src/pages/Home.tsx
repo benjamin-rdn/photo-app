@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { usePhotoLibraries } from '../PhotoLibrariesProvider';
+import { usePhotoLibraries } from '@/Providers/PhotoLibrariesProvider';
 
-const LibraryGrid = () => {
+export function Home() {
   const { libraries, loading, error } = usePhotoLibraries();
 
   if (loading) {
@@ -46,6 +46,4 @@ const LibraryGrid = () => {
       )}
     </div>
   );
-};
-
-export default LibraryGrid;
+}

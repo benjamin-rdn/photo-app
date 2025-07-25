@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { Photo } from '../types';
+import type { Photo } from '@/types';
 
 interface GridPhotoViewProps {
   photos: Photo[];

@@ -1,6 +1,5 @@
-import type { ReactNode } from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
-import type { Libraries, Library, Photo } from './types';
+import type { Libraries, Library, Photo } from '@/types';
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 interface FlatPhoto extends Omit<Photo, 'keywords'> {
   keywords: string;
@@ -15,7 +14,7 @@ interface PhotoLibrariesContextValue {
 
 const PhotoLibrariesContext = createContext<PhotoLibrariesContextValue | undefined>(undefined);
 
-export const PhotoLibrariesProvider = ({ children }: { children: ReactNode }) => {
+export function PhotoLibrariesProvider({ children }: PropsWithChildren) {
   const [libraries, setLibraries] = useState<Libraries | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -51,7 +50,7 @@ export const PhotoLibrariesProvider = ({ children }: { children: ReactNode }) =>
       {children}
     </PhotoLibrariesContext.Provider>
   );
-};
+}
 
 export const usePhotoLibraries = () => {
   const context = useContext(PhotoLibrariesContext);
