@@ -3,7 +3,7 @@ import type { Photo } from '@/types';
 import { SvgClose, SvgNext, SvgPrevious } from '@/ui/svg';
 
 interface PhotoModalProps {
-  photo: Photo;
+  photo?: Photo | null;
   onClose: () => void;
   onNext?: () => void;
   onPrev?: () => void;
@@ -24,6 +24,8 @@ export function PhotoModal({ photo, onClose, onNext, onPrev }: PhotoModalProps) 
   );
 
   useEffect(() => {
+    if (!photo) return;
+
     // Add keyboard event listeners when the modal is opened
     document.addEventListener('keydown', handleKeyDown);
     // Prevent scrolling on the body while modal is open
@@ -34,7 +36,11 @@ export function PhotoModal({ photo, onClose, onNext, onPrev }: PhotoModalProps) 
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'auto';
     };
-  }, [handleKeyDown]);
+  }, [handleKeyDown, photo]);
+
+  if (!photo) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50">

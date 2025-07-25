@@ -19,3 +19,5 @@ export interface Library {
 }
 
 export type Libraries = Library[];
+
+export type ViewMode = 'grid' | 'flow';
