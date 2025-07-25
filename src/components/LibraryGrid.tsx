@@ -1,50 +1,22 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-interface Library {
-  name: string;
-  path: string;
-  photos: string[];
-}
+import { usePhotoLibraries } from '../PhotoLibrariesProvider';
 
 const LibraryGrid = () => {
-  const [libraries, setLibraries] = useState<Library[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchLibraries = async () => {
-      try {
-        const response = await fetch('/libraries.json');
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setLibraries(data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to load libraries. Please try again later.');
-        setLoading(false);
-        console.error('Error fetching libraries:', err);
-      }
-    };
-
-    fetchLibraries();
-  }, []);
+  const { libraries, loading, error } = usePhotoLibraries();
 
   if (loading) {
     return <div className="text-center py-10">Loading libraries...</div>;
   }
 
   if (error) {
-    return <div className="text-center py-10 text-red-500">{error}</div>;
+    return <div className="text-center py-10 text-red-500">{error.message}</div>;
   }
 
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-6">Photo Libraries</h2>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 mt-4">
-        {libraries.map((library) => (
+        {libraries?.map((library) => (
           <Link
             key={library.name}
             to={`/library/${encodeURIComponent(library.name)}`}
@@ -53,7 +25,7 @@ const LibraryGrid = () => {
               <div className="h-[200px] bg-gray-100 flex items-center justify-center">
                 {library.photos.length > 0 ? (
                   <img
-                    src={`${library.path}/${library.photos[0]}`}
+                    src={`${library.path}/${library.photos[0].filename}`}
                     alt={`Cover for ${library.name}`}
                     className="w-full h-full object-cover"
                   />
@@ -69,7 +41,7 @@ const LibraryGrid = () => {
           </Link>
         ))}
       </div>
-      {libraries.length === 0 && (
+      {libraries && libraries.length === 0 && (
         <div className="text-center py-10 text-gray-500">No photo libraries found. Add some photos to get started.</div>
       )}
     </div>

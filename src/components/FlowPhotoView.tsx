@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
+import type { Photo } from '../types';
 
 interface FlowPhotoViewProps {
-  photos: string[];
-  basePath: string;
-  onPhotoClick: (photo: string) => void;
+  photos: Photo[];
+  onPhotoClick: (photo: Photo) => void;
   height?: number;
 }
 
-const FlowPhotoView = ({ photos, basePath, onPhotoClick, height = 200 }: FlowPhotoViewProps) => {
+const FlowPhotoView = ({ photos, onPhotoClick, height = 200 }: FlowPhotoViewProps) => {
   const [photoHeight, setPhotoHeight] = useState<number>(() => {
     const savedHeight = localStorage.getItem('photoHeight');
     return savedHeight ? parseInt(savedHeight) : height;
@@ -67,21 +67,21 @@ const FlowPhotoView = ({ photos, basePath, onPhotoClick, height = 200 }: FlowPho
       <div className="flex flex-wrap justify-start mt-4">
         {photos.map((photo) => (
           <button
-            key={photo}
+            key={photo.filename}
             onClick={() => onPhotoClick(photo)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 onPhotoClick(photo);
               }
             }}
-            aria-label={`View ${photo}`}
+            aria-label={`View ${photo.filename}`}
             type="button"
             className="border-none bg-transparent p-0 cursor-pointer transition-transform duration-200 hover:-translate-y-[3px]"
             style={{ margin: `${photoMargin}px` }}>
             <div className="flex justify-center items-center" style={{ height: `${photoHeight}px` }}>
               <img
-                src={`${basePath}/${photo}`}
-                alt={photo}
+                src={`${photo.relativePath}`}
+                alt={photo.filename}
                 className="h-full object-contain shadow-sm transition-shadow duration-200 hover:shadow-md"
               />
             </div>

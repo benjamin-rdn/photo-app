@@ -1,14 +1,14 @@
 import { useCallback, useEffect } from 'react';
+import type { Photo } from '../types';
 
 interface PhotoModalProps {
-  photoUrl: string;
-  photoName: string;
+  photo: Photo;
   onClose: () => void;
   onNext?: () => void;
   onPrev?: () => void;
 }
 
-const PhotoModal = ({ photoUrl, photoName, onClose, onNext, onPrev }: PhotoModalProps) => {
+const PhotoModal = ({ photo, onClose, onNext, onPrev }: PhotoModalProps) => {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -36,8 +36,8 @@ const PhotoModal = ({ photoUrl, photoName, onClose, onNext, onPrev }: PhotoModal
   }, [handleKeyDown]);
 
   return (
-    <div className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
-      <div className="max-w-[80vw] bg-white bordered rounded-lg overflow-hidden shadow-xl">
+    <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50">
+      <div className="max-w-[80vw] bg-white bordered border-white border-x-[70px] border-t-[70px] rounded-lg overflow-hidden shadow-xl">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 bg-black bg-opacity-50 text-white border-none rounded-full p-2 cursor-pointer transition-colors duration-200 hover:bg-opacity-70"
@@ -61,11 +61,14 @@ const PhotoModal = ({ photoUrl, photoName, onClose, onNext, onPrev }: PhotoModal
         </button>
 
         <div className="bg-gray-900 flex items-center justify-center">
-          <img src={photoUrl} alt={photoName} className="max-h-[80vh] max-w-full object-contain" />
+          <img src={photo.relativePath} alt={photo.filename} className="max-h-[80vh] max-w-full object-contain" />
         </div>
 
         <div className="flex justify-between items-center p-4 bg-white">
-          <p className="text-lg font-medium m-0">{photoName}</p>
+          <p className="font-small m-0 text-gray-700">
+            {photo.metadata.focalLength} - {photo.metadata.exposureTime}s - f/{photo.metadata.fNumber} - iso{' '}
+            {photo.metadata.iso}{' '}
+          </p>
 
           <div className="flex gap-2">
             {onPrev && (

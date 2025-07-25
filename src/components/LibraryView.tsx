@@ -1,61 +1,29 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { usePhotoLibraries } from '../PhotoLibrariesProvider';
+import type { Library, Photo } from '../types';
 import FlowPhotoView from './FlowPhotoView';
 import PhotoModal from './PhotoModal';
-
-interface Library {
-  name: string;
-  path: string;
-  photos: string[];
-}
 
 type ViewMode = 'grid' | 'flow';
 
 const LibraryView = () => {
   const { libraryName } = useParams<{ libraryName: string }>();
-  const [library, setLibrary] = useState<Library | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const { libraries, loading, error } = usePhotoLibraries();
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     const savedViewMode = localStorage.getItem('photoViewMode');
     return savedViewMode === 'flow' || savedViewMode === 'grid' ? savedViewMode : 'grid';
   });
 
-  useEffect(() => {
-    const fetchLibrary = async () => {
-      try {
-        const response = await fetch('/libraries.json');
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data: Library[] = await response.json();
-        const foundLibrary = data.find((lib) => lib.name === libraryName);
-
-        if (foundLibrary) {
-          setLibrary(foundLibrary);
-        } else {
-          setError('Library not found');
-        }
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to load library. Please try again later.');
-        setLoading(false);
-        console.error('Error fetching library:', err);
-      }
-    };
-
-    if (libraryName) {
-      fetchLibrary();
-    }
-  }, [libraryName]);
+  const library = libraries?.find((lib: Library) => lib.name === libraryName) || null;
 
   useEffect(() => {
     localStorage.setItem('photoViewMode', viewMode);
   }, [viewMode]);
 
-  const openPhotoModal = (photoFilename: string) => {
-    setSelectedPhoto(photoFilename);
+  const openPhotoModal = (photo: Photo) => {
+    setSelectedPhoto(photo);
   };
 
   const closePhotoModal = () => {
@@ -64,19 +32,15 @@ const LibraryView = () => {
 
   const getNextPhoto = () => {
     if (!library || !selectedPhoto) return null;
-
-    const currentIndex = library.photos.indexOf(selectedPhoto);
+    const currentIndex = library.photos.findIndex((p) => p.filename === selectedPhoto.filename);
     if (currentIndex === -1 || currentIndex === library.photos.length - 1) return null;
-
     return library.photos[currentIndex + 1];
   };
 
   const getPrevPhoto = () => {
     if (!library || !selectedPhoto) return null;
-
-    const currentIndex = library.photos.indexOf(selectedPhoto);
+    const currentIndex = library.photos.findIndex((p) => p.filename === selectedPhoto.filename);
     if (currentIndex <= 0) return null;
-
     return library.photos[currentIndex - 1];
   };
 
@@ -85,7 +49,7 @@ const LibraryView = () => {
   }
 
   if (error) {
-    return <div className="text-center py-10 text-red-500">{error}</div>;
+    return <div className="text-center py-10 text-red-500">{error.message}</div>;
   }
 
   if (!library) {
@@ -124,10 +88,10 @@ const LibraryView = () => {
       {library.photos.length === 0 ? (
         <div className="text-center py-10 text-gray-500">No photos in this library</div>
       ) : viewMode === 'grid' ? (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 mt-4">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-[35px] mt-4">
           {library.photos.map((photo) => (
             <button
-              key={photo}
+              key={photo.filename}
               className="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-200 hover:translate-y-[-3px] hover:shadow-md cursor-pointer text-left border-none bg-transparent p-0"
               onClick={() => openPhotoModal(photo)}
               onKeyDown={(e) => {
@@ -135,25 +99,31 @@ const LibraryView = () => {
                   openPhotoModal(photo);
                 }
               }}
-              aria-label={`View ${photo}`}
+              aria-label={`View ${photo.filename}`}
               type="button">
-              <div className="h-[200px] bg-gray-100 flex items-center justify-center">
-                <img src={`${library.path}/${photo}`} alt={photo} className="w-full h-full object-cover" />
+              <div className="h-[250px] bg-gray-100 flex items-center justify-center">
+                <img
+                  src={`${library.path}/${photo.filename}`}
+                  alt={photo.filename}
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <div className="p-4">
-                <p className="text-sm text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap">{photo}</p>
+              <div className="px-4 py-2">
+                <p className="text-xs text-gray-400 mt-1">
+                  {photo.metadata.focalLength} - {photo.metadata.exposureTime}s - f/{photo.metadata.fNumber} - iso{' '}
+                  {photo.metadata.iso}{' '}
+                </p>
               </div>
             </button>
           ))}
         </div>
       ) : (
-        <FlowPhotoView photos={library.photos} basePath={library.path} onPhotoClick={openPhotoModal} />
+        <FlowPhotoView photos={library.photos} onPhotoClick={openPhotoModal} />
       )}
 
       {selectedPhoto && (
         <PhotoModal
-          photoUrl={`${library.path}/${selectedPhoto}`}
-          photoName={selectedPhoto}
+          photo={selectedPhoto}
           onClose={closePhotoModal}
           onNext={
             getNextPhoto()
