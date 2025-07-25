@@ -54,7 +54,7 @@ const FlowPhotoView = ({ photos, onPhotoClick, height = 200 }: FlowPhotoViewProp
             id="photoMargin"
             type="range"
             min="0"
-            max="50"
+            max="100"
             step="1"
             value={photoMargin}
             onChange={(e) => setPhotoMargin(parseInt(e.target.value))}
@@ -63,8 +63,7 @@ const FlowPhotoView = ({ photos, onPhotoClick, height = 200 }: FlowPhotoViewProp
           <span className="text-sm text-gray-500 min-w-[40px]">{photoMargin}px</span>
         </div>
       </div>
-
-      <div className="flex flex-wrap justify-start mt-4">
+      <div className={`flex flex-wrap justify-start mt-4 mx-0 px-0`} style={{ gap: `${photoMargin}px` }}>
         {photos.map((photo) => (
           <button
             key={photo.filename}
@@ -76,12 +75,11 @@ const FlowPhotoView = ({ photos, onPhotoClick, height = 200 }: FlowPhotoViewProp
             }}
             aria-label={`View ${photo.filename}`}
             type="button"
-            className="border-none bg-transparent p-0 cursor-pointer transition-transform duration-200 hover:-translate-y-[3px]"
-            style={{ margin: `${photoMargin}px` }}>
+            className="border-none bg-transparent p-0 cursor-pointer transition-transform duration-200 hover:-translate-y-[3px]">
             <div className="flex justify-center items-center" style={{ height: `${photoHeight}px` }}>
               <img
                 src={`${photo.relativePath}`}
-                alt={photo.filename}
+                alt={photo.relativePath}
                 className="h-full object-contain shadow-sm transition-shadow duration-200 hover:shadow-md"
               />
             </div>
