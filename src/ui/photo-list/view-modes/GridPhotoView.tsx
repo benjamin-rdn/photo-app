@@ -8,7 +8,7 @@ interface GridPhotoViewProps {
 
 function GridPhotoView({ photos, onPhotoClick }: GridPhotoViewProps): ReactElement {
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-[35px] mt-4">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-[35px] mt-4">
       {photos.map((photo) => (
         <button
           key={photo.filename}

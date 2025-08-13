@@ -23,7 +23,7 @@
 		"formatter": {
 			"quoteStyle": "single",
 			"bracketSameLine": true,
-			"indentStyle":"space",
+			"indentStyle": "space",
 			"indentWidth": 2,
 			"lineWidth": 120
 		}
