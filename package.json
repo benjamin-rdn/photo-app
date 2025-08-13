@@ -8,6 +8,7 @@
 		"dev": "node scripts/generateLibraries.js && rsbuild dev --open",
 		"start": "pnpm dev",
 		"preview": "rsbuild preview",
+		"lint": "biome check",
 		"generate-libs": "node scripts/generateLibraries.js"
 	},
 	"dependencies": {
