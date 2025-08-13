@@ -19,7 +19,10 @@
 		"noUnusedParameters": true,
 		"paths": {
 			"@/*": ["./src/*"]
-		}
+		},
+
+		/* testing */
+		"types": ["vitest/globals", "@testing-library/jest-dom"]
 	},
-	"include": ["src"]
+	"include": ["src", "vitest.config.ts", "setupTest.ts"]
 }
